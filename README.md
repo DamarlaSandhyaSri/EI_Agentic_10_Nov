@@ -9,8 +9,12 @@ langraph/
 ├── state.py                    # Typed state schema
 ├── workflow.py                # StateGraph workflow with scheduler routing
 ├── run_demo.py                # Demo runner with CLI
+├── batch_job.py               # AWS Batch job entry point
+├── Dockerfile                 # Docker image definition
+├── docker-compose.yml         # Local testing with Docker Compose
 ├── README.md                  # This file
 ├── SCHEDULER_ROUTING.md       # Architecture design for scheduler routing
+├── AWS_SETUP.md               # Complete AWS Batch deployment guide
 ├── requirements.txt           # Dependencies
 └── agents/
     ├── scheduler/
@@ -169,9 +173,45 @@ This is a **complete LangGraph agentic flow**:
 
 **Note:** Using `langchain_core.tools` for tool definitions is the **standard, recommended approach** in LangGraph. LangGraph integrates with LangChain's tool system while providing pure LangGraph workflow orchestration.
 
+## ☁️ AWS Batch Deployment
+
+The workflow is designed for AWS Batch to handle long-running crawling jobs (5-6 hours).
+
+### Quick Start
+
+1. **Build and test locally:**
+   ```bash
+   docker build -t langraph-workflow:latest .
+   docker-compose run --rm langraph-workflow python batch_job.py --agent rss
+   ```
+
+2. **Deploy to AWS:**
+   - See **AWS_SETUP.md** for complete step-by-step setup instructions
+
+### Setup Instructions
+
+See **AWS_SETUP.md** for complete step-by-step manual setup instructions using AWS Console:
+- Docker image build and ECR setup
+- AWS Batch compute environment
+- Job queue and job definition
+- EventBridge scheduled rules
+- Testing and monitoring
+
+### Batch Job Entry Point
+
+The `batch_job.py` accepts command-line arguments:
+```bash
+python batch_job.py --agent rss   # Run RSS agent
+python batch_job.py --agent api   # Run API agent
+python batch_job.py --agent all   # Run all agents
+```
+
+This is designed to run in AWS Batch containers for long-running workflows.
+
 ## 📚 Additional Documentation
 
 - **SCHEDULER_ROUTING.md** - Detailed architecture design for scheduler and multi-agent routing
+- **AWS_SETUP.md** - Complete AWS Batch deployment guide
 
 ## 🔧 Troubleshooting
 

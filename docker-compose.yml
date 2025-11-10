@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  langraph-workflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: langraph-workflow
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount current directory for development (optional)
+      - .:/app
+    # Override command for testing different agents
+    # command: ["python", "run_demo.py", "--agent", "rss"]
+    # command: ["python", "run_demo.py", "--agent", "api"]
+    # command: ["python", "run_demo.py", "--agent", "all"]
+    restart: "no"
+
